@@ -3,6 +3,14 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/outputs.h>
 
+// Bump the default mouse move/scroll speeds up a bit before pulling in the
+// macros, then tune acceleration below so a quick tap stays precise for
+// clicking small UI targets, but holding a direction ramps up to a fast
+// glide across the screen.
+#define ZMK_POINTING_DEFAULT_MOVE_VAL 1200 // default: 600
+#define ZMK_POINTING_DEFAULT_SCRL_VAL 20   // default: 10
+#include <dt-bindings/zmk/pointing.h>
+
 #define BASE 0
 #define NAV 1
 #define MOUSE 2
@@ -12,7 +20,53 @@
 #define FUN 6
 #define ADJ 7
 
+// Requires CONFIG_ZMK_POINTING=y in your .conf (see below), otherwise the
+// &mmv / &msc / &mkp bindings in the MOUSE layer will not do anything.
+&mmv {
+    time-to-max-speed-ms = <400>;
+    acceleration-exponent = <1>;
+};
+
+&msc {
+    time-to-max-speed-ms = <300>;
+    acceleration-exponent = <0>;
+};
+
 / {
+        macros {
+                arrow: arrow_macro {
+                        compatible = "zmk,behavior-macro";
+                        label = "ARROW";
+                        #binding-cells = <0>;
+                        bindings = <&kp MINUS &kp GT>;
+                };
+                fat_arrow: fat_arrow_macro {
+                        compatible = "zmk,behavior-macro";
+                        label = "FAT_ARROW";
+                        #binding-cells = <0>;
+                        bindings = <&kp EQUAL &kp GT>;
+                };
+                scope_res: scope_res_macro {
+                        compatible = "zmk,behavior-macro";
+                        label = "SCOPE_RES";
+                        #binding-cells = <0>;
+                        bindings = <&kp COLON &kp COLON>;
+                };
+        };
+
+        combos {
+                compatible = "zmk,combos";
+                // Hold the two innermost thumb keys (TAB + RET, where the
+                // left and right thumb clusters meet) from any layer to
+                // reach ADJ (bluetooth profiles, bootloader, reset).
+                combo_adj {
+                        timeout-ms = <50>;
+                        key-positions = <32 33>;
+                        bindings = <&mo ADJ>;
+                        slow-release;
+                };
+        };
+
         behaviors {
                 hm: homerow_mods {
                         compatible = "zmk,behavior-hold-tap";
@@ -41,20 +95,20 @@
                 nav_layer {
                         display-name = "NAV";
                         bindings = <
-   &none     &none         &none          &none          &none             &none          &kp LG(V)   &kp LG(C)    &kp LG(X)   &kp LG(Z)
-   &kp LGUI  &kp LALT      &kp LCTRL      &kp LSHFT      &none             &kp CAPS       &kp LEFT    &kp DOWN     &kp UP      &kp RIGHT
-   &none     &none         &none          &none          &none             &kp INS        &kp HOME    &kp PG_DN    &kp PG_UP   &kp END
-                           &none          &none          &none             &kp RET        &kp BSPC    &kp DEL
+   &kp LC(Z)  &kp LC(LS(Z))  &kp LC(X)      &kp LC(C)      &kp LC(V)         &none          &kp LC(LEFT)  &kp LC(RIGHT)  &none       &none
+   &kp LGUI   &kp LALT       &kp LCTRL      &kp LSHFT      &none             &kp CAPS       &kp LEFT      &kp DOWN       &kp UP      &kp RIGHT
+   &none      &none          &none          &none          &none             &kp INS        &kp HOME      &kp PG_DN      &kp PG_UP   &kp END
+                              &none          &none          &none             &kp RET        &kp BSPC      &kp DEL
                         >;
                 };
 
                 mouse_layer {
                         display-name = "MOUSE";
                         bindings = <
-   &none       &none       &none          &none          &none             &none        &none         &none        &none       &none
-   &kp LGUI    &kp LALT    &kp LCTRL      &kp LSHFT      &none             &none        &none         &none        &none       &none
-   &none       &none       &none          &none          &none             &none        &none         &none        &none       &none
-                           &mo ADJ        &none          &none             &none        &none         &none
+   &none       &&none      &none          &none          &none             &none             &msc SCRL_LEFT   &msc SCRL_DOWN   &msc SCRL_UP     &msc SCRL_RIGHT
+   &kp LGUI    &kp LALT    &kp LCTRL      &kp LSHFT      &none             &none             &mmv MOVE_LEFT   &mmv MOVE_DOWN   &mmv MOVE_UP     &mmv MOVE_RIGHT
+   &none       &none       &none          &none          &none             &none             &none            &none            &none            &none
+                           &none          &none          &none             &mkp LCLK         &mkp RCLK        &mkp MCLK
                         >;
                 };
 
@@ -64,7 +118,7 @@
    &none       &none       &none          &none          &none             &kp LG(LS(N4))    &none         &kp C_BRI_DN  &kp C_BRI_UP  &none
    &kp LGUI    &kp LALT    &kp LCTRL      &kp LSHFT      &none             &none             &kp LSHFT     &kp C_VOL_DN  &kp C_VOL_UP  &kp LGUI
    &none       &none       &none          &none          &none             &none             &none         &none         &none         &none
-                           &none          &none          &mo ADJ           &kp C_STOP        &kp C_PP      &kp K_MUTE
+                           &none          &none          &none             &kp C_STOP        &kp C_PP      &kp K_MUTE
                         >;
                 };
 
@@ -81,10 +135,10 @@
                 sym_layer {
                         display-name = "SYM";
                         bindings = <
-   &kp LBRC    &kp AMPS    &kp STAR       &kp LPAR       &kp RBRC          &none        &none         &none        &none       &none
-   &kp COLON   &kp DLLR    &kp PRCNT      &kp CARET      &kp PLUS          &none        &kp LSHFT     &kp LCTRL    &kp LALT    &kp LGUI
-   &kp TILDE   &kp EXCL    &kp AT         &kp HASH       &kp PIPE          &none        &none         &none        &none       &none
-                           &kp LPAR       &kp RPAR       &kp UNDER         &none        &none         &mo ADJ
+   &kp HASH    &kp AT      &kp DLLR       &kp LPAR       &kp RPAR          &kp DQT      &kp STAR      &kp CARET    &kp PLUS    &kp EQUAL
+   &kp LBKT    &kp RBKT    &none          &kp LBRC       &kp RBRC          &scope_res   &kp AMPS      &kp EXCL     &kp COLON   &none
+   &none       &none       &none          &kp LT         &kp GT            &kp PIPE     &kp QMARK     &kp LSHFT    &kp LCTRL   &kp LALT
+                           &arrow         &fat_arrow     &kp UNDER         &none        &none         &none
                         >;
                 };
 
@@ -94,7 +148,7 @@
    &kp F12     &kp F7      &kp F8         &kp F9         &kp PSCRN         &none        &none         &none        &none       &none
    &kp F11     &kp F4      &kp F5         &kp F6         &kp SLCK          &none        &kp LSHFT     &kp LCTRL    &kp LALT    &kp LGUI
    &kp F10     &kp F1      &kp F2         &kp F3         &kp PAUSE_BREAK   &none        &none         &none        &none       &none
-                           &kp K_APP      &kp SPACE      &kp TAB           &mo ADJ      &none         &none
+                           &kp K_APP      &kp SPACE      &kp TAB           &none        &none         &none
                         >;
                 };
 
