@@ -16,5 +16,8 @@ include:
   - board: seeeduino_xiao_ble
     shield: settings_reset
   - board: seeeduino_xiao_ble
-    shield: ergonaut_one_s_left
-    snippet: studio-rpc-usb-uart # <-- required for ZMK Studio support
+    shield: ergonaut_one_s_left raw_hid_adapter
+    artifact-name: ergonaut_one_s_left_debug
+  - board: seeeduino_xiao_ble
+    shield: ergonaut_one_s_right raw_hid_adapter
+    artifact-name: ergonaut_one_s_right_debug
