@@ -17,7 +17,5 @@ include:
     shield: settings_reset
   - board: seeeduino_xiao_ble
     shield: ergonaut_one_s_left raw_hid_adapter
+    snippet: studio-rpc-usb-uart
     artifact-name: ergonaut_one_s_left_debug
-  - board: seeeduino_xiao_ble
-    shield: ergonaut_one_s_right raw_hid_adapter
-    artifact-name: ergonaut_one_s_right_debug
