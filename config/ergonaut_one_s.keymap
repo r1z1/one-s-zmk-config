@@ -35,6 +35,17 @@
 
 / {
         macros {
+                // French accents: one reusable macro, parameterized by
+                // (accent-mark, base-letter). Sends Compose (K_APP), then
+                // the mark, then the letter. e.g. &accent SQT E -> é
+                accent: accent_macro {
+                        compatible = "zmk,behavior-macro-two-param";
+                        #binding-cells = <2>;
+                        bindings = <&macro_tap &kp K_APP>,
+                                    <&macro_param_1to1 &kp MACRO_PLACEHOLDER>,
+                                    <&macro_param_2to1 &kp MACRO_PLACEHOLDER>;
+                };
+
                 arrow: arrow_macro {
                         compatible = "zmk,behavior-macro";
                         label = "ARROW";
@@ -52,94 +63,6 @@
                         label = "SCOPE_RES";
                         #binding-cells = <0>;
                         bindings = <&kp COLON &kp COLON>;
-                };
-
-                // French accents, sent as Compose-key sequences (K_APP is
-                // configured as Compose in your OS settings). Each one is
-                // Compose + accent-mark + base-letter.
-                e_acute: e_acute_macro {
-                        compatible = "zmk,behavior-macro";
-                        label = "E_ACUTE";
-                        #binding-cells = <0>;
-                        bindings = <&kp K_APP &kp SQT &kp E>;
-                };
-                e_grave: e_grave_macro {
-                        compatible = "zmk,behavior-macro";
-                        label = "E_GRAVE";
-                        #binding-cells = <0>;
-                        bindings = <&kp K_APP &kp GRAVE &kp E>;
-                };
-                e_circ: e_circ_macro {
-                        compatible = "zmk,behavior-macro";
-                        label = "E_CIRC";
-                        #binding-cells = <0>;
-                        bindings = <&kp K_APP &kp CARET &kp E>;
-                };
-                e_uml: e_uml_macro {
-                        compatible = "zmk,behavior-macro";
-                        label = "E_UML";
-                        #binding-cells = <0>;
-                        bindings = <&kp K_APP &kp DQT &kp E>;
-                };
-                a_grave: a_grave_macro {
-                        compatible = "zmk,behavior-macro";
-                        label = "A_GRAVE";
-                        #binding-cells = <0>;
-                        bindings = <&kp K_APP &kp GRAVE &kp A>;
-                };
-                a_circ: a_circ_macro {
-                        compatible = "zmk,behavior-macro";
-                        label = "A_CIRC";
-                        #binding-cells = <0>;
-                        bindings = <&kp K_APP &kp CARET &kp A>;
-                };
-                c_ced: c_ced_macro {
-                        compatible = "zmk,behavior-macro";
-                        label = "C_CED";
-                        #binding-cells = <0>;
-                        bindings = <&kp K_APP &kp COMMA &kp C>;
-                };
-                o_circ: o_circ_macro {
-                        compatible = "zmk,behavior-macro";
-                        label = "O_CIRC";
-                        #binding-cells = <0>;
-                        bindings = <&kp K_APP &kp CARET &kp O>;
-                };
-                oe_lig: oe_lig_macro {
-                        compatible = "zmk,behavior-macro";
-                        label = "OE_LIG";
-                        #binding-cells = <0>;
-                        bindings = <&kp K_APP &kp O &kp E>;
-                };
-                i_circ: i_circ_macro {
-                        compatible = "zmk,behavior-macro";
-                        label = "I_CIRC";
-                        #binding-cells = <0>;
-                        bindings = <&kp K_APP &kp CARET &kp I>;
-                };
-                i_uml: i_uml_macro {
-                        compatible = "zmk,behavior-macro";
-                        label = "I_UML";
-                        #binding-cells = <0>;
-                        bindings = <&kp K_APP &kp DQT &kp I>;
-                };
-                u_grave: u_grave_macro {
-                        compatible = "zmk,behavior-macro";
-                        label = "U_GRAVE";
-                        #binding-cells = <0>;
-                        bindings = <&kp K_APP &kp GRAVE &kp U>;
-                };
-                u_circ: u_circ_macro {
-                        compatible = "zmk,behavior-macro";
-                        label = "U_CIRC";
-                        #binding-cells = <0>;
-                        bindings = <&kp K_APP &kp CARET &kp U>;
-                };
-                u_uml: u_uml_macro {
-                        compatible = "zmk,behavior-macro";
-                        label = "U_UML";
-                        #binding-cells = <0>;
-                        bindings = <&kp K_APP &kp DQT &kp U>;
                 };
         };
 
@@ -281,10 +204,10 @@
                 accent_layer {
                         display-name = "ACCENT";
                         bindings = <
-   &e_acute    &e_grave    &e_circ        &e_uml         &a_grave          &a_circ      &c_ced        &o_circ      &oe_lig     &none
-   &i_circ     &i_uml      &u_grave       &u_circ        &u_uml            &none        &none         &none        &none       &none
-   &none       &none       &none          &none          &none             &none        &none         &none        &none       &none
-                           &none          &none          &none             &none        &none         &none
+   &accent SQT E   &accent GRAVE E  &accent CARET E   &accent DQT E    &accent GRAVE A   &accent CARET A  &accent COMMA C  &accent CARET O  &accent O E  &none
+   &accent CARET I &accent DQT I    &accent GRAVE U   &accent CARET U  &accent DQT U     &none            &none            &none            &none        &none
+   &none           &none            &none             &none            &none             &none            &none            &none            &none        &none
+                                    &none             &none            &none             &none            &none            &none
                         >;
                 };
         };
