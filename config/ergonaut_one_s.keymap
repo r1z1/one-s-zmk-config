@@ -12,13 +12,12 @@
 #include <dt-bindings/zmk/pointing.h>
 
 #define BASE 0
-#define NAV 1
+#define NUM_NAV 1
 #define MOUSE 2
-#define NUM 3
-#define SYM 4
-#define FUN 5
-#define ADJ 6
-#define ACCENT 7
+#define SYM 3
+#define FUN 4
+#define ADJ 5
+#define ACCENT 6
 
 // Requires CONFIG_ZMK_POINTING=y in your .conf, otherwise the
 // &mmv / &msc / &mkp bindings in the MOUSE layer will not do anything.
@@ -112,60 +111,50 @@
                 default_layer {
                         display-name = "MAIN";
                         bindings = <
-   &kp Q        &kp W        &kp E          &kp R          &kp T          &kp Y        &kp U         &kp I         &kp O        &kp P
-   &hml LGUI A  &hml LALT S  &hml LCTRL D   &hml LSHFT F   &kp G          &kp H        &hmr LSHFT J  &hmr LCTRL K  &hmr LALT L  &hmr LGUI SEMI
-   &kp Z        &kp X        &kp C          &kp V          &kp B          &kp N        &kp M         &kp COMMA     &kp DOT      &kp FSLH
-                             &lt ACCENT ESC &lt NAV SPACE  &lt MOUSE TAB  &lt SYM RET  &lt NUM BSPC  &lt FUN DEL
+   &kp Q        &kp W        &kp E         &kp R          &kp T          &kp Y        &kp U         &kp I         &kp O        &kp P
+   &hml LGUI A  &kp S        &kp D         &hml LSHFT F   &kp G          &kp H        &hmr LSHFT J  &hmr LCTRL K  &hmr LALT L  &hmr LGUI SEMI
+   &kp Z        &kp X        &kp C         &kp V          &kp B          &kp N        &kp M         &kp COMMA     &kp DOT      &kp FSLH
+                              &lt ACCENT ESC &lt NUM_NAV SPACE  &lt MOUSE TAB  &lt SYM RET  &lt NUM_NAV BSPC  &lt FUN DEL
                         >;
                 };
 
-                nav_layer {
-                        display-name = "NAV";
+                num_nav_layer {
+                        display-name = "Num/Nav";
                         bindings = <
-   &kp LC(Z)  &kp LC(LS(Z))  &kp LC(X)  &kp LC(C)  &kp LC(V)  &none       &kp LC(LEFT)  &kp LC(RIGHT)  &none      &none
-   &kp LGUI   &kp LALT       &kp LCTRL  &kp LSHFT  &none      &kp CAPS    &kp LEFT      &kp DOWN       &kp UP     &kp RIGHT
-   &none      &none          &none      &none      &none      &kp INS     &kp HOME      &kp PG_DN      &kp PG_UP  &kp END
-                             &none      &none      &none      &kp RET     &kp BSPC      &kp DEL
+   &trans      &kp HOME    &kp UP         &kp END        &kp PG_UP         &kp N7       &kp N8        &kp N9       &kp MINUS   &trans
+   &trans      &kp LEFT    &kp DOWN       &kp RIGHT      &kp PG_DN         &kp N4       &kp N5        &kp N6       &kp PLUS    &trans
+   &trans      &trans      &trans         &trans         &trans            &kp N1       &kp N2        &kp N3       &kp N0      &trans
+                           &trans         &trans         &trans            &trans       &trans        &trans
                         >;
                 };
 
                 mouse_layer {
                         display-name = "MOUSE";
                         bindings = <
-   &none       &mkp MB4    &mkp MB5       &none          &none             &none             &msc SCRL_LEFT   &msc SCRL_DOWN   &msc SCRL_UP     &msc SCRL_RIGHT
-   &kp LGUI    &kp LALT    &kp LCTRL      &kp LSHFT      &none             &none             &mmv MOVE_LEFT   &mmv MOVE_DOWN   &mmv MOVE_UP     &mmv MOVE_RIGHT
-   &none       &none       &none          &none          &none             &none             &none            &none            &none            &none
-                           &none          &none          &none             &mkp LCLK         &mkp RCLK        &mkp MCLK
-                        >;
-                };
-
-                num_layer {
-                        display-name = "NUM";
-                        bindings = <
-   &kp N1      &kp N2      &kp N3         &kp N4         &kp N5            &kp N6       &kp N7        &kp N8       &kp N9      &kp N0
-   &kp LBKT    &none       &none          &none          &kp RBKT          &none        &kp LSHFT     &kp LCTRL    &kp LALT    &kp LGUI
-   &kp GRAVE   &kp SQT     &none          &kp EQUAL      &kp BSLH          &none        &none         &none        &none       &none
-                           &kp DOT        &none          &kp MINUS         &none        &none         &none
+   &trans       &mkp MB4    &mkp MB5       &trans          &trans             &trans             &msc SCRL_LEFT   &msc SCRL_DOWN   &msc SCRL_UP     &msc SCRL_RIGHT
+   &kp LGUI    &kp LALT    &kp LCTRL      &kp LSHFT      &trans             &trans             &mmv MOVE_LEFT   &mmv MOVE_DOWN   &mmv MOVE_UP     &mmv MOVE_RIGHT
+   &trans       &trans       &trans          &trans          &trans             &trans             &trans            &trans            &trans            &trans
+                           &trans          &trans          &trans             &mkp LCLK         &mkp RCLK        &mkp MCLK
                         >;
                 };
 
                 sym_layer {
                         display-name = "SYM";
                         bindings = <
-   &kp HASH    &kp AT      &kp DLLR       &kp LPAR       &kp RPAR          &kp DQT      &kp STAR      &kp MINUS    &kp PLUS    &kp EQUAL
-   &kp LBKT    &kp RBKT    &none          &kp LBRC       &kp RBRC          &scope_res   &kp AMPS      &kp EXCL     &kp COLON   &none
-   &kp CARET   &none       &none          &kp LT         &kp GT            &kp PIPE     &kp QMARK     &kp LSHFT    &kp LCTRL   &kp LALT
-                           &arrow         &fat_arrow     &kp UNDER         &none        &none         &none
+   &kp EXCL    &kp AT      &kp HASH       &kp DLLR       &kp PRCNT         &kp CARET    &kp AMPS      &kp STAR     &kp BSLH    &kp PIPE
+   &kp EQUAL   &kp MINUS   &kp UNDER      &kp FSLH       &kp GRAVE         &kp LT       &kp LBRC      &kp LBKT     &kp LPAR    &kp DQT
+   &kp PLUS    &kp COLON   &kp SEMI       &kp QMARK      &kp TILDE         &kp GT       &kp RBRC      &kp RBKT     &kp RPAR    &kp SQT
+                           &arrow         &fat_arrow     &trans            &scope_res   &trans        &trans
                         >;
                 };
 
                 fun_layer {
                         display-name = "FUN";
                         bindings = <
-   &kp F12     &kp F7      &kp F8         &kp F9         &kp PSCRN         &none        &none         &none        &none       &none
-   &kp F11     &kp F4      &kp F5         &kp F6         &kp SLCK          &none        &kp LSHFT     &kp LCTRL    &kp LALT    &kp LGUI
-   &kp F10     &kp F1      &kp F2         &kp F3         &kp PAUSE_BREAK   &none        &none         &none        &none       &none
-                           &none          &kp SPACE      &kp TAB           &none        &none         &none
+   &kp F12     &kp F7      &kp F8         &kp F9         &kp PSCRN         &trans        &trans         &trans        &trans       &trans
+   &kp F11     &kp F4      &kp F5         &kp F6         &kp SLCK          &trans        &kp LSHFT     &kp LCTRL    &kp LALT    &kp LGUI
+   &kp F10     &kp F1      &kp F2         &kp F3         &kp PAUSE_BREAK   &trans        &trans         &trans        &trans       &trans
+                           &trans          &kp SPACE      &kp TAB           &trans        &trans         &trans
                         >;
                 };
 
@@ -174,18 +163,18 @@
                         bindings = <
    &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3 &bt BT_SEL 4   &bt BT_SEL 4   &bt BT_SEL 3  &bt BT_SEL 2  &bt BT_SEL 1 &bt BT_SEL 0
    &bt BT_CLR    &bt BT_PRV    &bt BT_NXT    &sys_reset   &bootloader    &bootloader    &sys_reset    &bt BT_NXT    &bt BT_PRV   &bt BT_CLR
-   &out OUT_TOG  &out OUT_BLE  &out OUT_USB  &none        &studio_unlock &studio_unlock &none         &out OUT_USB  &out OUT_BLE &out OUT_TOG
-                               &none         &none        &none          &none          &none       &none
+   &out OUT_TOG  &out OUT_BLE  &out OUT_USB  &trans        &studio_unlock &studio_unlock &trans         &out OUT_USB  &out OUT_BLE &out OUT_TOG
+                               &trans         &trans        &trans          &trans          &trans       &trans
                         >;
                 };
 
                 accent_layer {
                         display-name = "ACCENT";
                         bindings = <
-   &accent SQT E   &accent GRAVE E   &accent CARET E   &accent DQT E   &accent GRAVE A   &accent CARET A   &accent COMMA C   &accent CARET O   &accent O E   &none
-   &accent CARET I &accent DQT I     &accent GRAVE U   &accent CARET U &accent DQT U     &none             &none             &none             &none         &none
-   &none           &none             &none             &none           &none             &none             &none             &none             &none         &none
-                   &none             &none             &none           &none             &none             &none
+   &accent SQT E   &accent GRAVE E   &accent CARET E   &accent DQT E   &accent GRAVE A   &accent CARET A   &accent COMMA C   &accent CARET O   &accent O E   &trans
+   &accent CARET I &accent DQT I     &accent GRAVE U   &accent CARET U &accent DQT U     &trans             &trans             &trans             &trans         &trans
+   &trans           &trans             &trans             &trans           &trans             &trans             &trans             &trans             &trans         &trans
+                   &trans             &trans             &trans           &trans             &trans             &trans
                         >;
                 };
         };
