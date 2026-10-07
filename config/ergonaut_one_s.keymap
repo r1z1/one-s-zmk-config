@@ -43,6 +43,14 @@
                                 <&macro_param_2to1>,
                                 <&kp MACRO_PLACEHOLDER>;
                 };
+                // Cedilla on US International: AltGr+comma is the dead key,
+                // then c produces ç.
+                cedilla: cedilla_macro {
+                        compatible = "zmk,behavior-macro";
+                        label = "CEDILLA";
+                        #binding-cells = <0>;
+                        bindings = <&kp RA(COMMA) &kp C>;
+                };
                 arrow: arrow_macro {
                         compatible = "zmk,behavior-macro";
                         label = "ARROW";
@@ -55,43 +63,43 @@
                         #binding-cells = <0>;
                         bindings = <&kp EQUAL &kp GT>;
                 };
-				scope_res: scope_res_macro {
-						compatible = "zmk,behavior-macro";
-						label = "SCOPE_RES";
-						#binding-cells = <0>;
-						bindings = <&kp COLON &kp COLON>;
-				};
-				mut_ref: mut_ref_macro {
-						compatible = "zmk,behavior-macro";
-						label = "MUT_REF";
-						#binding-cells = <0>;
-						bindings = <&kp AMPS &kp M &kp U &kp T &kp SPACE>;
-				};
-				word_up: word_up_macro {
-						compatible = "zmk,behavior-macro";
-						label = "WORD_UP";
-						#binding-cells = <0>;
-						bindings = <&kp LC(UP)>;
-				};
-				word_down: word_down_macro {
-						compatible = "zmk,behavior-macro";
-						label = "WORD_DOWN";
-						#binding-cells = <0>;
-						bindings = <&kp LC(DOWN)>;
-				};
-				word_left: word_left_macro {
-						compatible = "zmk,behavior-macro";
-						label = "WORD_LEFT";
-						#binding-cells = <0>;
-						bindings = <&kp LC(LEFT)>;
-				};
-				word_right: word_right_macro {
-						compatible = "zmk,behavior-macro";
-						label = "WORD_RIGHT";
-						#binding-cells = <0>;
-						bindings = <&kp LC(RIGHT)>;
-				};
-				sel_word_left: sel_word_left_macro {
+                scope_res: scope_res_macro {
+                        compatible = "zmk,behavior-macro";
+                        label = "SCOPE_RES";
+                        #binding-cells = <0>;
+                        bindings = <&kp COLON &kp COLON>;
+                };
+                mut_ref: mut_ref_macro {
+                        compatible = "zmk,behavior-macro";
+                        label = "MUT_REF";
+                        #binding-cells = <0>;
+                        bindings = <&kp AMPS &kp M &kp U &kp T &kp SPACE>;
+                };
+                word_up: word_up_macro {
+                        compatible = "zmk,behavior-macro";
+                        label = "WORD_UP";
+                        #binding-cells = <0>;
+                        bindings = <&kp LC(UP)>;
+                };
+                word_down: word_down_macro {
+                        compatible = "zmk,behavior-macro";
+                        label = "WORD_DOWN";
+                        #binding-cells = <0>;
+                        bindings = <&kp LC(DOWN)>;
+                };
+                word_left: word_left_macro {
+                        compatible = "zmk,behavior-macro";
+                        label = "WORD_LEFT";
+                        #binding-cells = <0>;
+                        bindings = <&kp LC(LEFT)>;
+                };
+                word_right: word_right_macro {
+                        compatible = "zmk,behavior-macro";
+                        label = "WORD_RIGHT";
+                        #binding-cells = <0>;
+                        bindings = <&kp LC(RIGHT)>;
+                };
+                sel_word_left: sel_word_left_macro {
                         compatible = "zmk,behavior-macro";
                         label = "SEL_WORD_LEFT";
                         #binding-cells = <0>;
@@ -199,14 +207,12 @@
                         slow-release;
                 };
 
-                // Horizontal symbol combos. Every one of these now lives on
-                // the TOP or BOTTOM row only -- none of them share a
-                // position with a home row mod anymore, so there's no
-                // overlap between "chord this combo" and "hold this mod".
+                // Only two symbol combos remain: W+R gives "(" and E+R gives
+                // ")". They share R, so ZMK may wait briefly before deciding.
                 combo_lparen {
                         timeout-ms = <18>;
                         require-prior-idle-ms = <150>;
-                        key-positions = <1 2>;
+                        key-positions = <1 3>;
                         layers = <BASE NUM_NAV>;
                         bindings = <&kp LPAR>;
                 };
@@ -217,136 +223,52 @@
                         layers = <BASE NUM_NAV>;
                         bindings = <&kp RPAR>;
                 };
-                combo_lbkt {
-                        timeout-ms = <18>;
-                        require-prior-idle-ms = <150>;
-                        key-positions = <0 1>;
-                        layers = <BASE NUM_NAV>;
-                        bindings = <&kp LBKT>;
-                };
-                combo_rbkt {
-                        timeout-ms = <18>;
-                        require-prior-idle-ms = <150>;
-                        key-positions = <3 4>;
-                        layers = <BASE NUM_NAV>;
-                        bindings = <&kp RBKT>;
-                };
-                combo_lbrc {
-                        timeout-ms = <18>;
-                        require-prior-idle-ms = <150>;
-                        key-positions = <20 21>;
-                        layers = <BASE NUM_NAV>;
-                        bindings = <&kp LBRC>;
-                };
-                combo_rbrc {
-                        timeout-ms = <18>;
-                        require-prior-idle-ms = <150>;
-                        key-positions = <21 22>;
-                        layers = <BASE NUM_NAV>;
-                        bindings = <&kp RBRC>;
-                };
-                combo_under {
-                        timeout-ms = <18>;
-                        require-prior-idle-ms = <150>;
-                        key-positions = <22 23>;
-                        layers = <BASE NUM_NAV>;
-                        bindings = <&kp UNDER>;
-                };
-                combo_arrow {
-                        timeout-ms = <18>;
-                        require-prior-idle-ms = <150>;
-                        key-positions = <6 7>;
-                        layers = <BASE NUM_NAV>;
-                        bindings = <&arrow>;
-                };
-                combo_fat_arrow {
-                        timeout-ms = <18>;
-                        require-prior-idle-ms = <150>;
-                        key-positions = <7 8>;
-                        layers = <BASE NUM_NAV>;
-                        bindings = <&fat_arrow>;
-                };
-                combo_equal {
-                        timeout-ms = <18>;
-                        require-prior-idle-ms = <150>;
-                        key-positions = <5 6>;
-                        layers = <BASE NUM_NAV>;
-                        bindings = <&kp EQUAL>;
-                };
-                combo_sqt {
-                        timeout-ms = <18>;
-                        require-prior-idle-ms = <150>;
-                        key-positions = <8 9>;
-                        layers = <BASE NUM_NAV>;
-                        bindings = <&kp SQT>;
-                };
-                combo_dqt {
-                        timeout-ms = <18>;
-                        require-prior-idle-ms = <150>;
-                        key-positions = <26 27>;
-                        layers = <BASE NUM_NAV>;
-                        bindings = <&kp DQT>;
-                };
-                combo_qmark {
-                        timeout-ms = <18>;
-                        require-prior-idle-ms = <150>;
-                        key-positions = <27 28>;
-                        layers = <BASE NUM_NAV>;
-                        bindings = <&kp QMARK>;
-                };
         };
 
         behaviors {
+                // Home row mods use tap-preferred: a modifier only activates
+                // when the key is actually held past tapping-term-ms, not when
+                // another key is rolled over it. This stops false triggers
+                // like "ai" -> Cmd+I or "so" -> Alt+O.
                 hml: homerow_mods_left {
                         compatible = "zmk,behavior-hold-tap";
                         label = "HOMEROW_MODS_LEFT";
                         #binding-cells = <2>;
-                        tapping-term-ms = <200>;
+                        tapping-term-ms = <220>;
                         quick-tap-ms = <175>;
                         require-prior-idle-ms = <150>;
-                        flavor = "balanced";
+                        flavor = "tap-preferred";
                         bindings = <&kp>, <&kp>;
-                        // Only count a right-hand keypress as a valid hold
-                        // trigger, so same-hand rolls (as, sd, df...) can't
-                        // accidentally fire a modifier.
-                        hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 25 26 27 28 29>;
-                        hold-trigger-on-release;
                 };
                 hmr: homerow_mods_right {
                         compatible = "zmk,behavior-hold-tap";
                         label = "HOMEROW_MODS_RIGHT";
                         #binding-cells = <2>;
-                        tapping-term-ms = <200>;
+                        tapping-term-ms = <220>;
                         quick-tap-ms = <175>;
                         require-prior-idle-ms = <150>;
-                        flavor = "balanced";
+                        flavor = "tap-preferred";
                         bindings = <&kp>, <&kp>;
-                        hold-trigger-key-positions = <0 1 2 3 4 10 11 12 13 14 20 21 22 23 24>;
-                        hold-trigger-on-release;
                 };
                 hml_fn: homerow_fn_left {
                         compatible = "zmk,behavior-hold-tap";
                         label = "HOMEROW_FN_LEFT";
                         #binding-cells = <2>;
-                        tapping-term-ms = <200>;
+                        tapping-term-ms = <220>;
                         quick-tap-ms = <175>;
                         require-prior-idle-ms = <150>;
-                        flavor = "balanced";
+                        flavor = "tap-preferred";
                         bindings = <&mo>, <&kp>;
-                        hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 25 26 27 28 29>;
-                        hold-trigger-on-release;
                 };
                 hmr_fn: homerow_fn_right {
                         compatible = "zmk,behavior-hold-tap";
                         label = "HOMEROW_FN_RIGHT";
                         #binding-cells = <2>;
-                        tapping-term-ms = <200>;
+                        tapping-term-ms = <220>;
                         quick-tap-ms = <175>;
                         require-prior-idle-ms = <150>;
-                        flavor = "balanced";
+                        flavor = "tap-preferred";
                         bindings = <&mo>, <&kp>;
-                        hold-trigger-key-positions = <0 1 2 3 4 10 11 12 13 14 20 21 22 23 24>;
-                        hold-trigger-on-release;
                 };
         };
 
@@ -413,13 +335,16 @@
                         >;
                 };
 
+                // Accent layer (hold the left thumb ACCENT key, then press the
+                // letter). Dead-key accents send the US International dead key
+                // then the letter. ç uses the cedilla macro (AltGr+comma, c).
                 accent_layer {
                         display-name = "ACCENT";
                         bindings = <
-   &accent SQT E   &accent GRAVE E   &accent CARET E   &accent DQT E   &accent GRAVE A   &accent CARET A   &accent COMMA C   &accent CARET O   &accent O E   &trans
-   &accent CARET I &accent DQT I     &accent GRAVE U   &accent CARET U &accent DQT U     &trans             &trans             &trans             &trans         &trans
-   &trans           &trans             &trans             &trans           &trans             &trans             &trans             &trans             &trans         &trans
-                   &trans             &trans             &trans           &trans             &trans             &trans
+   &accent DQT E    &accent GRAVE U  &accent SQT E    &accent GRAVE E  &accent CARET E  &accent CARET A  &cedilla         &accent CARET O  &trans        &accent CARET U
+   &trans           &trans           &trans           &accent GRAVE A  &accent DQT U    &accent CARET I  &accent DQT I   &trans           &trans        &trans
+   &trans           &trans           &trans           &trans           &trans           &trans           &trans           &trans           &trans        &trans
+                    &trans           &trans           &trans           &trans           &trans           &trans
                         >;
                 };
 
